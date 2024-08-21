@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model model {
+  id                                  Int         @id @default(autoincrement())
+  id_tool                             Int?
+  name                                String      @db.VarChar(255)
+  descr                               String?
+  id_status                           Int?
+  tech_data                           String?
+  id_user_creator                     Int?
+  id_user_approved                    Int?
+  id_section                          Int?
+  date_create                         DateTime?   @default(now()) @db.Timestamp(6)
+  date_update                         DateTime?   @db.Timestamp(6)
+  section                             section?    @relation(fields: [id_section], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  status                              status?     @relation(fields: [id_status], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tool                                tool?       @relation(fields: [id_tool], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_model_id_user_approvedTousers users?      @relation("model_id_user_approvedTousers", fields: [id_user_approved], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_model_id_user_creatorTousers  users?      @relation("model_id_user_creatorTousers", fields: [id_user_creator], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  model_tag                           model_tag[]
+}
+
+model model_tag {
+  id_tag   Int
+  id_model Int
+  model    model @relation(fields: [id_model], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tag      tag   @relation(fields: [id_tag], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_tag, id_model])
+}
+
+model role {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
+  description String?
+  users       users[]
+}
+
+model section {
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(255)
+  id_parent     Int?
+  model         model[]
+  section       section?  @relation("sectionTosection", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_section section[] @relation("sectionTosection")
+}
+
+model status {
+  id    Int     @id @default(autoincrement())
+  name  String  @db.VarChar(255)
+  model model[]
+}
+
+model tag {
+  id        Int         @id @default(autoincrement())
+  name      String      @db.VarChar(255)
+  model_tag model_tag[]
+}
+
+model tool {
+  id        Int     @id @default(autoincrement())
+  name      String  @db.VarChar(255)
+  descr     String?
+  tech_data String?
+  model     model[]
+}
+
+model users {
+  id                                  Int       @id @default(autoincrement())
+  name                                String    @db.VarChar(255)
+  email                               String    @unique @db.VarChar(255)
+  pass                                String    @db.VarChar(255)
+  id_role                             Int?
+  flag_activation                     Boolean?  @default(false)
+  date_registration                   DateTime? @default(now()) @db.Timestamp(6)
+  refresh_token                       String?
+  date_update_token                   DateTime? @db.Timestamp(6)
+  hashlink                            String?
+  date_create_hashlink                DateTime? @db.Timestamp(6)
+  model_model_id_user_approvedTousers model[]   @relation("model_id_user_approvedTousers")
+  model_model_id_user_creatorTousers  model[]   @relation("model_id_user_creatorTousers")
+  role                                role?     @relation(fields: [id_role], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
