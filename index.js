@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.get('/prisma__user-a', async function (req, res) {
+app.get('/prisma_user_a', async function (req, res) {
     try {
         const smt = await prisma.users.findMany({
             where: {
@@ -102,7 +102,7 @@ app.get('/prisma__user-a', async function (req, res) {
     }
 });
 
-app.post('/prisma__user-a', (req, res) => {
+app.post('/prisma_user_a', (req, res) => {
     console.log(req.body)
     res.json(req.body)
 });
