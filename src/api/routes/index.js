@@ -1,12 +1,10 @@
-const { Router } = require('express');
-const userRouter = require('./users.js');
-const tagModelRouter = require('./tag_model.js');
+import { Router } from 'express';
+import { userRouter } from './users.js';
+import { tagModelRouter } from './tag_model.js';
 
 const router = Router();
 
 router.use('/users', userRouter);
-router.use('/tag-models', tagModelRouter);
+router.use('/tag_models', tagModelRouter);
 
-module.exports = {
-    router
-};
+export { router };

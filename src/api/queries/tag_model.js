@@ -1,6 +1,7 @@
-import {exampleDbPrisma} from './index.js';
-import {exampleDb} from "./index.js";
-export async function getTagsAndModelsPrisma(name){
+import { exampleDbPrisma } from './index.js';
+import { exampleDb } from './index.js';
+
+async function getTagsAndModelsPrisma(name) {
     const data = await exampleDbPrisma.tag.findMany({
         select: {
             name: true,
@@ -15,9 +16,10 @@ export async function getTagsAndModelsPrisma(name){
             }
         }
     });
-    return(data);
+    return data;
 }
-export async function getTagsAndModels(name){
+
+async function getTagsAndModels(name) {
     const query = `
             select t.name as tag_name, m.name as model_name
             from tag t
@@ -25,5 +27,10 @@ export async function getTagsAndModels(name){
             join model m on mt.id_model = m.id
         `;
     const data = await exampleDb.any(query);
-    return(data);
+    return data;
 }
+
+export {
+    getTagsAndModels,
+    getTagsAndModelsPrisma
+};
