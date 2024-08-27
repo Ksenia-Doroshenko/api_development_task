@@ -2,7 +2,7 @@ import { queries } from '../index.js';
 
 async function getTagsAndModelsPrisma(req, res) {
     try {
-        const data = await queries.tagModel.getTagsAndModelsPrisma(req.params.name); // Assuming name is a URL parameter
+        const data = await queries.tagModel.getTagsAndModelsPrisma(req.params.name);
         res.send(data);
     } catch (error) {
         console.error('Error:', error);
@@ -12,7 +12,7 @@ async function getTagsAndModelsPrisma(req, res) {
 
 async function getTagsAndModels(req, res) {
     try {
-        const data = await queries.tagModel.getTagsAndModels(req.params.name); // Assuming name is a URL parameter
+        const data = await queries.tagModel.getTagsAndModels(req.params.name);
         res.send(data);
     } catch (error) {
         console.error('Error:', error);
