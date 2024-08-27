@@ -10,6 +10,7 @@ async function getTagsAndModelsPrisma(req, res) {
     }
 }
 
+
 async function getTagsAndModels(req, res) {
     try {
         const data = await queries.tagModel.getTagsAndModels(req.params.name);
