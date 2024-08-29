@@ -1,9 +1,9 @@
-import { queries } from '../index.js';
+import {queries} from '../index.js';
 
-async function getTagsAndModelsPrisma(req, res) {
+export async function getTagsAndModelsPrisma(req, res) {
     try {
         const data = await queries.tagModel.getTagsAndModelsPrisma(req.params.name);
-        res.send(data);
+        res.json(data);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Server error');
@@ -11,17 +11,22 @@ async function getTagsAndModelsPrisma(req, res) {
 }
 
 
-async function getTagsAndModels(req, res) {
+export async function getTagsAndModels(req, res) {
     try {
         const data = await queries.tagModel.getTagsAndModels(req.params.name);
-        res.send(data);
+        res.json(data);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Server error');
     }
 }
 
-export {
-    getTagsAndModelsPrisma,
-    getTagsAndModels
-};
+export async function postTagsAndModels(req, res) {
+    try {
+        res.json(req.body);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Server error');
+    }
+}
+

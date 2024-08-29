@@ -1,5 +1,5 @@
 import { exampleDbPrisma, exampleDb } from './index.js';
-async function getFullUserDataByNamePrisma(name) {
+export async function getFullUserDataByNamePrisma(name) {
     const fullUserData = await exampleDbPrisma.users.findMany({
         where: {
             name: name,
@@ -78,7 +78,7 @@ async function getFullUserDataByNamePrisma(name) {
     return (fullUserData);
 }
 
-async function getFullUserDataByName(name) {
+export async function getFullUserDataByName(name) {
     const query = `
             select u.id as user_id, 
             u.name as user_name, 
@@ -118,9 +118,4 @@ async function getFullUserDataByName(name) {
         }))
     }
     return (fullUserData);
-}
-
-export {
-    getFullUserDataByName,
-    getFullUserDataByNamePrisma
 }
