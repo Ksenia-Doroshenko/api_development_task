@@ -1,4 +1,5 @@
-import { exampleDbPrisma, exampleDb } from './index.js';
+import {exampleDb, exampleDbPrisma} from './index.js';
+
 export async function getFullUserDataByNamePrisma(name) {
     const fullUserData = await exampleDbPrisma.users.findMany({
         where: {
@@ -118,4 +119,25 @@ export async function getFullUserDataByName(name) {
         }))
     }
     return (fullUserData);
+}
+
+export async function registration({
+                                       id_user,
+                                       name,
+                                       timezone,
+                                       pass
+                                   }) {
+    return exampleDbPrisma.users.update({
+        data: {
+            timezone,
+            name,
+            pass,
+            hashlink: null,
+            date_create_hashlink: null,
+            flag_activation: true
+        },
+        where: {
+            id: id_user
+        }
+    });
 }
