@@ -12,4 +12,8 @@ authRouter.route('/register')
         body: registerSchema
     }), controllers.auth.registration);
 
+authRouter.route('/confirm/:hashlink')
+    // .get(jwtAuthMiddleware, controllers.users.getFullUserDataByNamePrisma)
+    .get(controllers.auth.confirmRegistration);
+
 export { authRouter };
