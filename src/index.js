@@ -5,8 +5,9 @@ import bodyParser from "body-parser";
 const app = express();
 const PORT = 8000;
 
-app.use('/api', routes.router);
 app.use(bodyParser.json());
+
+app.use('/api', routes.router);
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
