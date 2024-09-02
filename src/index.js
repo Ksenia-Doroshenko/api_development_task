@@ -6,7 +6,6 @@ const app = express();
 const PORT = 8000;
 
 app.use(bodyParser.json());
-
 app.use('/api', routes.router);
 
 app.get('/', (req, res) => {

@@ -24,7 +24,6 @@ const jwtMiddleware = expressjwt({
 });
 export const jwtAuthMiddleware = [jwtMiddleware, middlewareJWTTokenError];
 
-
 export function validateToken(token, type) {
     try {
         if (type === 'access') {
@@ -55,7 +54,7 @@ export function validationMiddleware(schema) {
             await schema.body.validate(req.body);
             return next();
         } catch (err) {
-            return res.status(400).json({ message: err.message });
+            return res.status(400).json({message: err.message});
         }
     }
 }

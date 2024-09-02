@@ -1,1 +1,1 @@
-export * as auth from './auth.js'
+export * as auth from './system.js'

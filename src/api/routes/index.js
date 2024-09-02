@@ -2,7 +2,7 @@ import {Router} from 'express';
 import {userRouter} from './users.js';
 import {tagModelRouter} from './tag_model.js';
 import {jwtAuthMiddleware} from "../../_start.js";
-import {authRouter} from "./auth.js";
+import {authRouter} from "./system.js";
 
 const router = Router();
 
