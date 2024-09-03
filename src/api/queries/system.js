@@ -31,3 +31,25 @@ export async function getUserByEmail(email) {
     });
     return (user);
 }
+
+export async function getUserByRefreshToken(refreshToken) {
+    const user = await exampleDbPrisma.users.findFirst({
+        where: {
+            refresh_token: refreshToken
+        }
+    });
+    return (user);
+}
+
+export async function setUserRefreshToken(id, refreshToken) {
+    const user = await exampleDbPrisma.users.update({
+        where: {
+            id
+        },
+        data: {
+            refresh_token: refreshToken
+        }
+    });
+    return (user);
+}
+

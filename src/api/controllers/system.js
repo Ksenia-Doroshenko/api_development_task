@@ -1,18 +1,18 @@
 import {queries} from '../index.js'
 import bcrypt from 'bcrypt';
 import {v6 as uuidv6} from 'uuid';
-import {generateTokens} from "../../_start.js";
+import {generateTokens, validateToken} from "../../_start.js";
 import {getObjectByFields} from "../../utils/getObjectByFields.js";
 
 export async function registration(req, res) {
-    try{
+    try {
         const {
             name,
             email,
             password,
         } = req.body;
 
-        const newUser = await queries.auth.createNewUser({
+        const newUser = await queries.system.createNewUser({
             name, email, pass: await bcrypt.hash(password, 10), hashlink: uuidv6()
         });
 
@@ -32,7 +32,7 @@ export async function confirmRegistration(req, res) {
         const {
             hashlink
         } = req.params;
-        const user = await queries.auth.updateActiveUserByHashlink(hashlink);
+        const user = await queries.system.updateActiveUserByHashlink(hashlink);
 
         return res.json({
             message: 'Аккаунт подтверждён'
@@ -49,14 +49,14 @@ export async function authentication(req, res) {
     res.json(req.auth);
 }
 
-export async function authorization(req, res){
+export async function authorization(req, res) {
     try {
         const {
             email,
             password
         } = req.body;
 
-        const user = await queries.auth.getUserByEmail(email);
+        const user = await queries.system.getUserByEmail(email);
         const clearUser = getObjectByFields(user, ['id', 'name', 'email']);
         const isSamePasswords = await bcrypt.compare(password, user.pass);
 
@@ -65,6 +65,7 @@ export async function authorization(req, res){
         } else {
             const tokens = generateTokens(clearUser);
             res.cookie('RefreshToken', tokens.refreshToken);
+            await queries.system.setUserRefreshToken(user.id, tokens.refreshToken);
             res.json({user: clearUser, token: tokens.accessToken})
         }
 
@@ -73,5 +74,33 @@ export async function authorization(req, res){
             error: e,
             message: 'Ошибка авторизации'
         });
+    }
+}
+
+export async function refreshUserToken(req, res) {
+    try {
+        const {RefreshToken} = req.cookies;
+        if (!RefreshToken) {
+            return res.status(401);
+        }
+
+        const validateUser = validateToken(RefreshToken, 'refresh');
+        console.log(validateUser)
+        const user = await queries.system.getUserByRefreshToken(RefreshToken);
+        if (!validateUser || !user) {
+            return res.status(401);
+        }
+
+        let userData = getObjectByFields(user, ['id', 'name', 'email']);
+
+        const tokens = generateTokens(userData);
+        await queries.system.setUserRefreshToken(user.id, tokens.refreshToken);
+        res.cookie('RefreshToken', tokens.refreshToken);
+
+        return res.json({
+            token: tokens.accessToken,
+        });
+    } catch (e) {
+        return res.status(401).json(e);
     }
 }

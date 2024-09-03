@@ -8,15 +8,17 @@ const authRouter = Router({mergeParams: true});
 authRouter.route('/register')
     .post(validationMiddleware({
         body: registerSchema
-    }), controllers.auth.registration);
+    }), controllers.system.registration);
 
 authRouter.route('/confirm/:hashlink')
-    .get(controllers.auth.confirmRegistration);
+    .get(controllers.system.confirmRegistration);
 
 authRouter.route('/')
     .post(validationMiddleware({
         body: authSchema
-    }), controllers.auth.authorization)
-    .get(jwtAuthMiddleware, controllers.auth.authorization)
+    }), controllers.system.authorization)
+    .get(jwtAuthMiddleware, controllers.system.authorization);
+
+authRouter.get('/refresh_token', controllers.system.refreshUserToken);
 
 export {authRouter}
