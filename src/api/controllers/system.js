@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import {v6 as uuidv6} from 'uuid';
 import {generateTokens, validateToken} from "../../_start.js";
 import {getObjectByFields} from "../../utils/getObjectByFields.js";
+import {sendConfirmURL} from "../../utils/mails.js";
 
 export async function registration(req, res) {
     try {
@@ -12,8 +13,16 @@ export async function registration(req, res) {
             password,
         } = req.body;
 
+        const hashlink = uuidv6();
+
         const newUser = await queries.system.createNewUser({
-            name, email, pass: await bcrypt.hash(password, 10), hashlink: uuidv6()
+            name, email, pass: await bcrypt.hash(password, 10), hashlink: hashlink
+        });
+
+        await sendConfirmURL({
+            to: newUser.email,
+            hashlink,
+            res
         });
 
         return res.json({
