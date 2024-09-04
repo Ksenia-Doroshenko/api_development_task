@@ -48,12 +48,11 @@ export async function sendConfirmURL({
                                    hashlink,
                                }) {
     const subject = 'Подтверждение регистрации!';
-    const origin = 'http://localhost:8000/api/auth';
 
     const textMsg =
         '<h2>Подтвердите свою почту!</h2>' +
         'Пожалуйста, подтвердите свой почтовый адрес, пройдя по ссылке:' +
-        `<a href="${origin}/confirm/${hashlink}" style="font-size: 20px; color: #005bd1; display: block; padding: 14px 0">Подтверждение регистрации</a>` +
+        `<a href="${process.env.ORIGIN}/confirm/${hashlink}" style="font-size: 20px; color: #005bd1; display: block; padding: 14px 0">Подтверждение регистрации</a>` +
         'Спасибо за регистрацию на нашем сервисе!';
 
     await sendMail({
