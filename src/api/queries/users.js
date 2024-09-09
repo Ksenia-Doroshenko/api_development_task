@@ -121,23 +121,16 @@ export async function getFullUserDataByName(name) {
     return (fullUserData);
 }
 
-export async function registration({
-                                       id_user,
-                                       name,
-                                       timezone,
-                                       pass
-                                   }) {
+export async function updateUserData({
+                                         id_user,
+                                         name
+                                     }){
     return exampleDbPrisma.users.update({
         data: {
-            timezone,
-            name,
-            pass,
-            hashlink: null,
-            date_create_hashlink: null,
-            flag_activation: true
+            name
         },
         where: {
             id: id_user
         }
-    });
+    })
 }

@@ -17,7 +17,7 @@ authRouter.route('/')
     .post(validationMiddleware({
         body: authSchema
     }), controllers.system.authorization)
-    .get(jwtAuthMiddleware, controllers.system.authorization);
+    .get(jwtAuthMiddleware, controllers.system.authentication);
 
 authRouter.get('/refresh_token', controllers.system.refreshUserToken);
 
