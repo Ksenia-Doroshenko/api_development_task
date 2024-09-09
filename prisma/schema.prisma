@@ -74,6 +74,7 @@ model tool {
 
 model users {
   id                                  Int       @id @default(autoincrement())
+  avatar                              String?   @db.VarChar
   name                                String    @db.VarChar(255)
   email                               String    @unique @db.VarChar(255)
   pass                                String    @db.VarChar(255)
