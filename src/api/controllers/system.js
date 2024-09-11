@@ -66,7 +66,7 @@ export async function authorization(req, res) {
         } = req.body;
 
         const user = await queries.system.getUserByEmail(email);
-        const clearUser = getObjectByFields(user, ['id', 'name', 'email']);
+        const clearUser = getObjectByFields(user, ['id', 'name', 'email', 'avatar']);
         const isSamePasswords = await bcrypt.compare(password, user.pass);
 
         if (!user || !isSamePasswords) {
@@ -100,7 +100,7 @@ export async function refreshUserToken(req, res) {
             return res.status(401);
         }
 
-        let userData = getObjectByFields(user, ['id', 'name', 'email']);
+        let userData = getObjectByFields(user, ['id', 'name', 'email', 'avatar']);
 
         const tokens = generateTokens(userData);
         await queries.system.setUserRefreshToken(user.id, tokens.refreshToken);

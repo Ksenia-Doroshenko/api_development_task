@@ -123,11 +123,25 @@ export async function getFullUserDataByName(name) {
 
 export async function updateUserData({
                                          id_user,
-                                         name
-                                     }){
+                                         name,
+                                     }) {
     return exampleDbPrisma.users.update({
         data: {
-            name
+            name,
+        },
+        where: {
+            id: id_user
+        }
+    })
+}
+
+export async function updateUserAvatar({
+                                         id_user,
+                                         avatar,
+                                     }) {
+    return exampleDbPrisma.users.update({
+        data: {
+            avatar,
         },
         where: {
             id: id_user

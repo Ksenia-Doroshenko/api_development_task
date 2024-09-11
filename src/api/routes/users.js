@@ -14,4 +14,7 @@ userRouter.post('/user/:name', controllers.users.postFullUserDataByName);
 userRouter.patch('/', validationMiddleware({
     body: updateSchema
 }), controllers.users.updateUserData);
+
+userRouter.post('/avatar', controllers.users.uploadAvatar);
+
 export {userRouter};
